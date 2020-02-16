@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: paycheckservices
+spec:
+  selector:
+    app: paycheckservices
+  ports:
+  - name: "http"
+    protocol: TCP
+    port: 9090
+    targetPort: 9090
+status:
+  loadBalancer: {}

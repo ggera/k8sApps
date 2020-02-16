@@ -1,0 +1,90 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paycheckservices
+  labels:
+    app: paycheckservices
+    version: {{ .Values.image.tag }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 40%
+  selector:
+    matchLabels:
+      app: paycheckservices
+  template:
+    metadata:
+      labels:
+        app: paycheckservices
+    spec:
+      #      affinity:
+      #        podAntiAffinity:
+      #          #Distribute pod accross zones
+      #          requiredDuringSchedulingIgnoredDuringExecution:
+      #          - labelSelector:
+      #              matchExpressions:
+      #              - key: app
+      #                operator: In
+      #                values:
+      #                - pagawebservices
+      #            topologyKey: failure-domain.beta.kubernetes.io/zone
+      containers:
+        - name: paycheckservices
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+#          readinessProbe:
+#            httpGet:
+#              path: /api
+#              port: 9090
+#            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+#            periodSeconds: 15
+#            successThreshold: 1
+#            failureThreshold: 5
+#            timeoutSeconds: 5
+#          livenessProbe:
+#            httpGet:
+#              path: /api
+#              port: 9090
+#            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+#            periodSeconds: 60
+#            successThreshold: 1
+#            failureThreshold: 3
+#            timeoutSeconds: 1
+          #Pass Environment Variables to Container
+          env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: "{{ .Values.profileName }}"
+          - name: DB_URL
+            value: "{{ .Values.db.paycheck.url }}"
+          - name: DB_USER
+            value: "{{ .Values.db.paycheck.user }}"
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: paycheckDbPassword
+                name: services
+          - name: DB_NAME
+            value: "{{ .Values.db.paycheck.name }}"
+          - name: JAVA_OPTS
+            value: "{{ .Values.javaOpts }}"
+          volumeMounts:
+            - name: paycheck-file-share
+              mountPath: /var/paycheck
+              subPath: "paycheck"
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      imagePullSecrets:
+        - name: paycheck-services-cr
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      volumes:
+      - name: paycheck-file-share
+        azureFile:
+          secretName: paycheck-sa-secret
+          shareName: {{ .Values.storageAccount.shareName }}
+          readOnly: false
+status: {}

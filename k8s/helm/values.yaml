@@ -1,0 +1,46 @@
+
+image:
+  repository: "pagangcr.azurecr.io/paycheck/services"
+  pullPolicy: "IfNotPresent"
+  tag: "1.0.0.0"
+
+#imageCredentials.username is set via env variable in deploy.sh
+#imageCredentials.password is set via env variable in deploy.sh
+imageCredentials:
+  registry: "pagangcr.azurecr.io"
+  username: ""
+  password: ""
+
+replicaCount: 1
+
+profileName: "dev"
+
+javaOpts: "-XX:+UseParallelOldGC -XX:ParallelGCThreads=8 -ms512M -mx1024M"
+resources:
+  limits:
+    cpu: "4"
+    memory: "3Gi"
+  requests:
+    cpu: "100m"
+    memory: "512Mi"
+
+db:
+  paycheck:
+    url: "jdbc:sqlserver://paga-ng-qa-mssql-1.c531bd14fc51.database.windows.net:1433;encrypt=false;trustServerCertificate=false;hostNameInCertificate=*.c531bd14fc51.database.windows.net;loginTimeout=30;serverName=paga-ng-qa-mssql-1.c531bd14fc51.database.windows.net"
+    user: "paga"
+    password: ""
+    name: "paycheck"
+
+storageAccount:
+  name: "pagangqaappssa"
+  shareName: "dev"
+  password: ""
+
+rollingUpdate:
+  maxUnavailable: 40%
+
+readinessProbe:
+  initialDelaySeconds: 120
+
+livenessProbe:
+  initialDelaySeconds: 180
