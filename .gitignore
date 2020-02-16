@@ -37,13 +37,6 @@ local.properties
 pgp1.keystore.bak
 pgp1.keystore
 .DS_Store
-paga-services/profile/env-coder.properties
-paga-lib/build/
 .gitattributes
-paga-services/build/
-paga-services-client/build/
-paga-ui-lib/build/
 gradleUnitTestOutput/
 gradleIntTestOutput/
-
-paga-test-automated/saved-screenshot/

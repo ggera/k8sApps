@@ -1,15 +1,9 @@
 
 image:
-  repository: "pagangcr.azurecr.io/paycheck/services"
+  repository: "hub.docker.com/geralabs-cr"
   pullPolicy: "IfNotPresent"
-  tag: "1.0.0.0"
+  tag: "latest"
 
-#imageCredentials.username is set via env variable in deploy.sh
-#imageCredentials.password is set via env variable in deploy.sh
-imageCredentials:
-  registry: "pagangcr.azurecr.io"
-  username: ""
-  password: ""
 
 replicaCount: 1
 
@@ -24,23 +18,31 @@ resources:
     cpu: "100m"
     memory: "512Mi"
 
-db:
-  paycheck:
-    url: "jdbc:sqlserver://paga-ng-qa-mssql-1.c531bd14fc51.database.windows.net:1433;encrypt=false;trustServerCertificate=false;hostNameInCertificate=*.c531bd14fc51.database.windows.net;loginTimeout=30;serverName=paga-ng-qa-mssql-1.c531bd14fc51.database.windows.net"
-    user: "paga"
-    password: ""
-    name: "paycheck"
-
-storageAccount:
-  name: "pagangqaappssa"
-  shareName: "dev"
-  password: ""
-
 rollingUpdate:
   maxUnavailable: 40%
 
-readinessProbe:
-  initialDelaySeconds: 120
+# Nginx ingress settings
+controller:
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
+  service:
+    enableHttp: true
+  stats:
+    enabled: true
+  metrics:
+    enabled: true
 
-livenessProbe:
-  initialDelaySeconds: 180
+# Ingress settigns
+ingress:
+  enabled: true
+  name: gera-labs
+  rules:
+  - host: gera-labs
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: gera-labs-entrypoint
+          servicePort: 80
