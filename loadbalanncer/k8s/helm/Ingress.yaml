@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Ingress
+metadata:
+  name: gera-labs
+  annotations:
+    kubernetes.io/ingress.allow-http: "false"
+spec:
+  rules:
+  - host: gera-labs.com
+    http:
+      paths:
+      - path: /app1
+        backend:
+          serviceName: geralabsapp1
+          servicePort: 9090
+      - path: /app2
+        backend:
+          serviceName: geralabsap2
+          servicePort: 8080

@@ -37,12 +37,16 @@ controller:
 # Ingress settigns
 ingress:
   enabled: true
-  name: gera-labs
+  name: geralabsapp1
   rules:
-  - host: gera-labs
+  - host: gera-labs.com
     http:
       paths:
-      - path: /
+      - path: /app1
         backend:
-          serviceName: gera-labs-entrypoint
-          servicePort: 80
+          serviceName: geralabsapp1
+          servicePort: 9090
+      - path: /app2
+          backend:
+            serviceName: geralabsapp2
+            servicePort: 8080
