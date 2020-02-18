@@ -2,7 +2,7 @@
 image:
   repository: "hub.docker.com/geralabs-cr"
   pullPolicy: "IfNotPresent"
-  tag: "latest"
+  tag: "geralabs-app1"
 
 
 replicaCount: 1
