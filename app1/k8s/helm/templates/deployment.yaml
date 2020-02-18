@@ -22,7 +22,7 @@ spec:
         app: geralabsapp1
     spec:
       containers:
-        - name: geralabs-app1
+        - name: geralabsapp1
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           readinessProbe:

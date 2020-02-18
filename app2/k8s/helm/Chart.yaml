@@ -1,5 +1,4 @@
 apiVersion: v1
-#TODO: This should match the image tag and should be set using --app-version there's an open PR in helm to handle this
 appVersion: "1.0.0.0"
 description: A Helm chart for geralabsapp2 Services API
 name: geralabsapp2-services

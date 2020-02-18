@@ -1,6 +1,6 @@
 
 image:
-  repository: "hub.docker.com/geralabs-cr"
+  repository: "hub.docker.com/geralabs-cr/geralabs-app1"
   pullPolicy: "IfNotPresent"
   tag: "latest"
 
@@ -21,32 +21,8 @@ resources:
 rollingUpdate:
   maxUnavailable: 40%
 
-# Nginx ingress settings
-controller:
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-    maxReplicas: 10
-  service:
-    enableHttp: true
-  stats:
-    enabled: true
-  metrics:
-    enabled: true
+readinessProbe:
+  initialDelaySeconds: 120
 
-# Ingress settigns
-ingress:
-  enabled: true
-  name: geralabsapp1
-  rules:
-  - host: gera-labs.com
-    http:
-      paths:
-      - path: /app1
-        backend:
-          serviceName: geralabsapp1
-          servicePort: 9090
-      - path: /app2
-          backend:
-            serviceName: geralabsapp2
-            servicePort: 8080
+livenessProbe:
+  initialDelaySeconds: 180

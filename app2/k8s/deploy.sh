@@ -13,5 +13,4 @@ set -e
 set +x
 
 helm template ./helm \
-    --set image.tag=${appVersion} \
     | kubectl apply --namespace ${NAMESPACE} -f -
