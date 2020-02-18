@@ -20,3 +20,8 @@ resources:
 
 rollingUpdate:
   maxUnavailable: 40%
+
+imageCredentials:
+  registry: hub.docker.com/geralabs-cr
+  username: gerawork
+  password: changeit

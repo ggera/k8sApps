@@ -13,4 +13,4 @@ set -e
 set +x
 
 helm template ./helm \
-    | kubectl apply --namespace ${NAMESPACE} -f -
+    | kubectl apply --validate=false --namespace ${NAMESPACE} -f -

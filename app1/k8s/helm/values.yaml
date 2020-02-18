@@ -1,6 +1,6 @@
 
 image:
-  repository: "hub.docker.com/geralabs-cr/geralabs-app1"
+  repository: "hub.docker.com/geralabs-cr"
   pullPolicy: "IfNotPresent"
   tag: "latest"
 
@@ -26,3 +26,8 @@ readinessProbe:
 
 livenessProbe:
   initialDelaySeconds: 180
+
+imageCredentials:
+  registry: hub.docker.com/geralabs-cr
+  username: gerawork
+  password: changeit
